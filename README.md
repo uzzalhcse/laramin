@@ -1,3 +1,15 @@
+## Installation
+
+Just clone the project to anywhere in your computer.
+Run ` composer install ` <br>
+and ` php artisan migrate --seed`
+
+Now you are done.
+<br>
+
+` php artisan serve ` and open the project on the browser.
+
+
 ## ACL Pattern
 
 We will follow module name singular and table name laravel default (plural) maintain snake case as laravel maintain for table name:
