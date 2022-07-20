@@ -1,3 +1,23 @@
+# LaraMin - Zero Config Admin Boilerplate with Laravel and Sanctum
+
+LaraMin is a zero-config Admin boilerplate with Laravel Sanctum and comes with excellent user, office , role management and  `ACL` features out of the box. Start your next big project with vuemin, focus on building business logic, and save countless hours of implementing boring user and role management again and again
+
+## Requirements
+
+- PHP >= 8.0
+- BCMath PHP Extension
+- Ctype PHP Extension
+- cURL PHP Extension
+- DOM PHP Extension
+- Fileinfo PHP Extension
+- JSON PHP Extension
+- Mbstring PHP Extension
+- OpenSSL PHP Extension
+- PCRE PHP Extension
+- PDO PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
+
 ## Installation
 
 Just clone the project to anywhere in your computer.
