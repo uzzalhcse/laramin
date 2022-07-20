@@ -22,9 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::get('/roles',                     [RoleController::class, 'index'])                  ->name('roles.index');
-Route::get('/pages',                         [PageController::class, 'index']);
-Route::get('/faqs',                         [FaqController::class, 'index']);
 Route::get('/statuses',                     [UtilsController::class, 'statuses']);
 Route::get('/divisions',                    [UtilsController::class, 'divisions']);
 Route::get('/districts/{division}',         [UtilsController::class, 'districts']);

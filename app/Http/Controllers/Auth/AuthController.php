@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
+use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Models\Auth\User;
 use App\Repositories\Auth\RedisUserRepository;
@@ -59,13 +61,7 @@ class AuthController extends ApiController
         ]);
     }
 
-    public function updateProfile(Request $request){
-        $request->validate([
-            'avatar_file' =>  'mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,'.Auth::id(),
-            'office_id' => 'required',
-        ]);
+    public function updateProfile(UpdateProfileRequest $request){
         $user = $this->userRepository->updateProfile($request,Auth::user());
         return $this->success('Profile updated successfully',[
             'user'=>$user
@@ -73,13 +69,8 @@ class AuthController extends ApiController
 
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
-        $request->validate([
-            'current_password' => ['required', new MatchOldPassword()],
-            'new_password' => 'required|string|min:8|different:current_password',
-            'password_confirmation' => 'required|same:new_password'
-        ]);
         User::find(Auth::id())->update(['password'=> $request->new_password]);
         return $this->success('Successfully Change Password');
 

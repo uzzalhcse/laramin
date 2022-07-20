@@ -42,21 +42,18 @@ class RedisUserRepository extends BaseEloquentRepository implements UserReposito
 
     public function updateProfile(Request $request, $user): User
     {
-        $this->user = $user;
-        $this->user->name = $request->name;
-        $this->user->email = $request->email;
-        $this->user->office_id = $request->office_id;
+        $this->update($request->validated(),$user);
         if ($request->hasFile('avatar_file')) {
             $destinationPath = '/uploads/user/';
             $file = $request->file('avatar_file');
             $filename = time().'_'.Str::of($file->getClientOriginalName())->lower()->kebab();
             $file->move(public_path() . $destinationPath, $filename);
             $filename_path = $destinationPath . $filename;
-            $this->user->avatar = $filename_path;
+            $user->avatar = $filename_path;
         }
         Cache::flush();
-        $this->user->save();
-        return $this->user;
+        $user->save();
+        return $user;
     }
 
     /**
