@@ -10,7 +10,7 @@ use App\Interfaces\Auth\UserRepositoryInterface;
 use App\Jobs\WelcomeEmailJob;
 use App\Models\Acl\Module;
 use App\Models\Auth\User;
-use App\Repositories\Auth\RedisUserRepository;
+use App\Repositories\Auth\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,7 @@ class UserController extends ApiController
     protected UserRepositoryInterface $userRepository;
 
     /**
-     * @param RedisUserRepository $userRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(UserRepositoryInterface $userRepository)
     {

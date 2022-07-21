@@ -2,11 +2,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Models\Auth\User;
-use App\Repositories\Auth\RedisUserRepository;
+use App\Repositories\Auth\UserRepository;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,25 +16,16 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends ApiController
 {
-    protected RedisUserRepository $userRepository;
+    protected UserRepository $userRepository;
 
-    public function __construct(RedisUserRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $rules = [
-            'email' => 'required',
-            'password' => 'required|string'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->error($validator->errors()->first());
-        }
-        elseif (!Auth::attempt($request->only('email','password'))) {
+        if (!Auth::attempt($request->only('email','password'))) {
             return $this->error('Credentials not match', 401);
         }
         if (!Auth::user()->is_active){

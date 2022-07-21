@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\OfficeRequest;
 use App\Http\Resources\Auth\OfficeResource;
+use App\Interfaces\Auth\OfficeRepositoryInterface;
 use App\Models\Auth\Office;
 use App\Models\Auth\User;
 use App\Repositories\Auth\OfficeRepository;
@@ -15,12 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class OfficeController extends ApiController
 {
-    protected OfficeRepository $officeRepository;
+    protected OfficeRepositoryInterface $officeRepository;
 
     /**
-     * @param OfficeRepository $officeRepository
+     * @param OfficeRepositoryInterface $officeRepository
      */
-    public function __construct(OfficeRepository $officeRepository)
+    public function __construct(OfficeRepositoryInterface $officeRepository)
     {
         $this->officeRepository = $officeRepository;
     }

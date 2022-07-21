@@ -14,6 +14,13 @@ LaraMin is a zero-config Admin boilerplate with Laravel Sanctum and comes with e
     5. Redis as cache server
     6. Laravel Sanctum Authentication
     7. Followed Reposityory Pattern
+    8. Laravel Pagination
+
+![alt text](./screenshots/edit-role.png)
+![alt text](./screenshots/profile.png)
+![alt text](./screenshots/users.png)
+
+
 ## Requirements
 
 - PHP >= 8.0

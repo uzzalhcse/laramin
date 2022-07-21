@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Auth\StoreRoleRequest;
 use App\Http\Resources\Acl\PermissionResource;
+use App\Interfaces\Auth\RoleRepositoryInterface;
 use App\Models\Acl\Module;
 use App\Models\Auth\Role;
 use Illuminate\Http\JsonResponse;
@@ -13,25 +15,27 @@ use Illuminate\Support\Str;
 
 class RoleController extends ApiController
 {
+    protected RoleRepositoryInterface $roleRepository;
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return JsonResponse
+     * @param RoleRepositoryInterface $roleRepository
      */
+    public function __construct(RoleRepositoryInterface $roleRepository)
+    {
+        $this->roleRepository = $roleRepository;
+    }
+
     public function index(): JsonResponse
     {
-        return $this->success('Role list',[
-            'roles'=> Role::latest()->get()
+        return $this->success('Role lists',[
+            'roles'=> $this->roleRepository->getAllItems()
         ]);
     }
 
-    public function show($id, Request $request){
-        $role = Role::find($id);
-        if (!isset($role)){
-            return response()->error('Role not exist');
-        }
+    public function show(Role $role, Request $request){
+
         $request->merge([
-            'role_ids'=>[$id]
+            'role_ids'=>[$role->id]
         ]);
 
         $modules = Module::with('features.permissions')->where('is_enabled',1)->get();
@@ -42,55 +46,17 @@ class RoleController extends ApiController
     }
 
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreRoleRequest $request): JsonResponse
     {
-        $rules = [
-            'name' => 'required',
-            'permissions' => 'required|array'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->error($validator->errors()->first());
-        }
-        /**
-         * create new role
-         */
-        $role = new Role();
-        $role->name = Str::ucfirst($request->name);
-        $role->slug = Str::kebab($request->name);
-        $role->description = $request->description;
-        $role->save();
+        $role = $this->roleRepository->store($request->validated());
 
         $role->permissions()->attach($request->permissions);
         return $this->success('Role Permissions Saved');
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(StoreRoleRequest $request, Role $role): JsonResponse
     {
-
-        $rules = [
-            'name' => 'required',
-            'permissions' => 'required|array'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->error($validator->errors()->first());
-        }
-        /**
-         * For Module & Role many to many relationship
-         * insert pivot table
-         * loop in multiple array of object
-         */
-        $role = Role::find($id);
-        if (!isset($role)){
-            return response()->error('Role not exist');
-        }
-        $role->name = Str::ucfirst($request->name);
-        $role->slug = Str::kebab($request->name);
-        $role->description = $request->description;
-        $role->save();
+        $this->roleRepository->update($request->validated(),$role);
 
         $role->permissions()->sync($request->permissions);
         return $this->success('Role Permission Updated');
@@ -104,7 +70,7 @@ class RoleController extends ApiController
      */
     public function destroy(Role $role): JsonResponse
     {
-        $role->delete();
+        $this->roleRepository->delete($role);
         return $this->success('Role deleted');
     }
 
