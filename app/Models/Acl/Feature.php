@@ -6,12 +6,42 @@ use App\Models\Auth\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Acl\Feature
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property int $is_enabled
+ * @property int $module_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Acl\Ability[] $active_abilities
+ * @property-read int|null $active_abilities_count
+ * @property-read mixed $abilities
+ * @property-read \App\Models\Acl\Module $module
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Acl\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
+ * @property-read int|null $roles_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereIsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereModuleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Feature extends Model
 {
     use HasFactory;
-//    protected $with = ['abilities'];
     protected $hidden = ['module_id','description','is_enabled','created_at','updated_at'];
-//    protected $appends = ['abilities'];
 
     /**
      * Get the module that owns the feature.

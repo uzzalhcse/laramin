@@ -6,6 +6,34 @@ use App\Models\Auth\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Acl\Module
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property int $is_enabled
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Acl\Feature[] $features
+ * @property-read int|null $features_count
+ * @property-read mixed $checked
+ * @property-read mixed $checked_by_user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Acl\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Module newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Module newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Module query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereIsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Module whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Module extends Model
 {
     use HasFactory;
@@ -20,23 +48,6 @@ class Module extends Model
     public function getCheckedByUserAttribute(){
         return in_array(true, $this->permissions->pluck('checked_by_user')->toArray());
     }
-//    public function getCheckedAttribute(){
-////        dd(request()->route('role'));
-////        dd($this->roles->pluck('id'));
-////        dd(in_array(request()->route('role'),$this->roles->pluck('id')->toArray()));
-//        $role = request()->route('role');
-////        $roles = $this->roles->pluck('id');
-////        dd($this->roles->where('id', $role)->isEmpty());
-////        if ($this->roles->where('id', $role)->isEmpty()){
-////            return true;
-////        }
-//        return false;
-//    }
-
-
-//    public function roles(){
-//        return $this->belongsToMany(Role::class,'module_roles')->withTimestamps();
-//    }
     /**
      * Get the features for the module.
      */

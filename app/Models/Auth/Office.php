@@ -10,6 +10,47 @@ use App\Traits\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Auth\Office
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $bn_name
+ * @property string|null $org_code
+ * @property string $office_type
+ * @property string $jurisdiction
+ * @property int $division_id
+ * @property int|null $district_id
+ * @property int|null $upazila_id
+ * @property int|null $union_id
+ * @property int|null $status_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read District|null $district
+ * @property-read Division $division
+ * @property-read \App\Models\Share\Status|null $status
+ * @property-read Union|null $union
+ * @property-read Upazila|null $upazila
+ * @method static \Illuminate\Database\Eloquent\Builder|Office active()
+ * @method static \Database\Factories\Auth\OfficeFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Office newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Office query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereBnName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereDistrictId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereDivisionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereJurisdiction($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereOfficeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereOrgCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereUnionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereUpazilaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Office whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Office extends Model
 {
     use HasFactory, Status;
