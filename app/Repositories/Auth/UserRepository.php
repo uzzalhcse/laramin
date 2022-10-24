@@ -26,20 +26,6 @@ class UserRepository extends BaseEloquentRepository implements UserRepositoryInt
         parent::__construct($user);
     }
 
-    public function getAllItems(): UserCollection|AnonymousResourceCollection
-    {
-        if (isset(request()->page)){ // paginate if request has page query
-            $items = Cache::remember('paginate_'.$this->model->getTable().'_'.request()->page,config('settings.cache_ttl'), function (){
-                return $this->model::latest()->paginate(config('settings.pagination.per_page'));
-            });
-            return new UserCollection($items);
-        }
-        $items = Cache::remember($this->model->getTable(),config('settings.cache_ttl'), function (){
-            return $this->model::latest()->take(20)->get();
-        });
-        return UserResource::collection($items);
-    }
-
     public function updateProfile(Request $request, $user): User
     {
         $this->update($request->validated(),$user);

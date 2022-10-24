@@ -25,20 +25,6 @@ class RoleRepository extends BaseEloquentRepository implements RoleRepositoryInt
         parent::__construct($model);
     }
 
-    public function getAllItems(): RoleCollection | AnonymousResourceCollection
-    {
-
-        if (isset(request()->page)){ // paginate if request has page query
-            $items = Cache::remember('paginate_'.$this->model->getTable().'_'.request()->page,config('settings.cache_ttl'), function (){
-                return $this->model::latest()->paginate(config('settings.pagination.per_page'));
-            });
-            return new RoleCollection($items);
-        }
-        $items = Cache::remember($this->model->getTable(),config('settings.cache_ttl'), function (){
-            return $this->model::latest()->take(20)->get();
-        });
-        return RoleResource::collection($items);
-    }
 
 
 }

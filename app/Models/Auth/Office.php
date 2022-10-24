@@ -2,11 +2,14 @@
 
 namespace App\Models\Auth;
 
+use App\Interfaces\ApiResourceInterface;
 use App\Models\Share\District;
 use App\Models\Share\Division;
 use App\Models\Share\Union;
 use App\Models\Share\Upazila;
+use App\Traits\ScopeActive;
 use App\Traits\Status;
+use App\Traits\Utils;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,9 +54,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Office whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Office extends Model
+class Office extends Model implements ApiResourceInterface
 {
-    use HasFactory, Status;
+    use HasFactory, Status, Utils, ScopeActive;
 
     protected $fillable = [
         'name',
@@ -97,10 +100,6 @@ class Office extends Model
         self::UNION => self::UNION
     ];
 
-    public function scopeActive($query){
-        return $query->where('status_id',1);
-    }
-
     public function division(){
         return $this->belongsTo(Division::class);
     }
@@ -115,5 +114,24 @@ class Office extends Model
 
     public function union(){
         return $this->belongsTo(Union::class);
+    }
+
+    public function formatResponse($is_detail = false): array
+    {
+        return [
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'office_type'=>$this->office_type,
+            'jurisdiction'=>$this->jurisdiction,
+            'division_id'=>$this->division_id,
+            'district_id'=>$this->district_id,
+            'upazila_id'=>$this->upazila_id,
+            'union_id'=>$this->union_id,
+            'division_name'=>$this->division->name,
+            'district_name'=>$this->district ? $this->district->name: 'N/A',
+            'upazila_name'=>$this->upazila ? $this->upazila->name: 'N/A',
+            'status_name'=>$this->status->title,
+            'status_id'=>$this->status_id,
+        ];
     }
 }

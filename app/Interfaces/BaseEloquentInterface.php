@@ -3,28 +3,34 @@
 namespace App\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 interface BaseEloquentInterface
 {
     /**
-     * get paginate item if request exit query 'page'
-     * get paginate item if request exit query 'page'
+     * get paginate item if request query exist 'page'
      * without paginate return latest n items
      */
+    public function getActiveItems();
+
     public function getAllItems();
 
-    /**
-     * @param array $payload
-     * @return Model|null
-     */
-    public function store(array $payload): ?Model;
+    public function getMyItems();
+
+    public function getById($id);
 
     /**
-     * @param array $payload
+     * @param Request $request
+     * @return Model|null
+     */
+    public function store(Request $request): ?Model;
+
+    /**
+     * @param Request $request
      * @param Model $model
      * @return Model|null
      */
-    public function update(array $payload, Model $model): ?Model;
+    public function update(Request $request, Model $model): ?Model;
 
     /**
      * @param Model $model

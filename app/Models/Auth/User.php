@@ -3,9 +3,12 @@
 namespace App\Models\Auth;
 
 use App\Http\Resources\Auth\RolePermissions;
+use App\Interfaces\ApiResourceInterface;
 use App\Models\Acl\Module;
 use App\Models\Acl\Permission;
+use App\Traits\ScopeActive;
 use App\Traits\Status;
+use App\Traits\Utils;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -60,9 +63,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedBy($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements ApiResourceInterface
 {
-    use HasApiTokens, HasFactory, Notifiable, Status;
+    use HasApiTokens, HasFactory, Notifiable, Status, ScopeActive, Utils;
 
     /**
      * The attributes that are mass assignable.
@@ -136,5 +139,18 @@ class User extends Authenticatable
 
     public function getAvatarAttribute(){
         return url('/').$this->attributes['avatar'];
+    }
+
+    public function formatResponse($is_details = false): array{
+        return [
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'email'=>$this->email,
+            'office_id'=>$this->office_id,
+            'role_ids'=>$this->roles->pluck('id'),
+            'roles'=>$this->roles,
+            'is_active'=>$this->is_active,
+            'status_id'=>$this->status_id,
+        ];
     }
 }

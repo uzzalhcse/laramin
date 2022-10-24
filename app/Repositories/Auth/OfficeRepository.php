@@ -22,20 +22,4 @@ class OfficeRepository extends BaseEloquentRepository implements OfficeRepositor
         parent::__construct($office);
     }
 
-    public function getAllItems(): AnonymousResourceCollection|OfficeCollection
-    {
-
-        if (isset(request()->page)){ // paginate if request has page query
-            $items = Cache::remember('paginate_'.$this->model->getTable().'_'.request()->page,config('settings.cache_ttl'), function (){
-                return $this->model::active()->latest()->paginate(config('settings.pagination.per_page'));
-            });
-            return new OfficeCollection($items);
-        }
-        $items = Cache::remember($this->model->getTable(),config('settings.cache_ttl'), function (){
-            return $this->model::active()->latest()->take(20)->get();
-        });
-        return OfficeResource::collection($items);
-    }
-
-
 }

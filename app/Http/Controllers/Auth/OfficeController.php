@@ -51,7 +51,7 @@ class OfficeController extends ApiController
     public function show(Office $office): JsonResponse
     {
         return $this->success('Office info',[
-            'office'=> new OfficeResource($office)
+            'office'=> $office->formatResponse()
         ]);
     }
 

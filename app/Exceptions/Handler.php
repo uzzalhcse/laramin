@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -53,14 +54,18 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
     public function render($request, Throwable $exception) {
         if ($exception instanceof NotFoundHttpException) {
             return $this->error('Route Not Found',null,404);
-        }
-        if ($exception instanceof ValidationException) {
+        }elseif ($exception instanceof MethodNotAllowedHttpException) {
+            return $this->error($exception->getMessage(),null,404);
+        } elseif ($exception instanceof ValidationException) {
+            return $this->error($exception->getMessage(),null,404);
+        } else{
             return $this->error($exception->getMessage(),null,404);
         }
 
-        return parent::render($request, $exception);
+//        return $this->error($exception->getMessage(),null,404);
     }
 }

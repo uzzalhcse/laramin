@@ -49,7 +49,7 @@ class UserController extends ApiController
     public function store(UserRequest $request): JsonResponse
     {
         $user = $this->userRepository->store($request->validated());
-        $this->userRepository->saveAcl($request->role_ids,$request->permissions);
+        $this->userRepository->saveAcl($user,$request->role_ids,$request->permissions);
 
         dispatch(new WelcomeEmailJob($user));
         return $this->success('User Saved');
@@ -69,7 +69,7 @@ class UserController extends ApiController
 
         $modules = Module::with('features.permissions')->where('is_enabled',1)->get();
         return $this->success('User Info',[
-            'user'=> new UserResource($user),
+            'user'=> $user->formatResponse(),
             'modules'=> PermissionResource::collection($modules),
         ]);
     }

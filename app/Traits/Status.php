@@ -21,5 +21,8 @@ trait Status
     public function status(){
         return $this->belongsTo(\App\Models\Share\Status::class);
     }
+    public function getStatusTitleAttribute(){
+        return $this->status->title;
+    }
 
 }

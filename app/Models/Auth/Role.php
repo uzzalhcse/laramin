@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\Interfaces\ApiResourceInterface;
 use App\Models\Acl\Module;
 use App\Models\Acl\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +38,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Role extends Model
+class Role extends Model implements ApiResourceInterface
 {
     use HasFactory;
 
@@ -68,5 +69,14 @@ class Role extends Model
 
     public function permissions(){
         return $this->belongsToMany(Permission::class,'role_permissions');
+    }
+
+    public function formatResponse($is_detail = false): array
+    {
+        return [
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'slug'=>$this->slug
+        ];
     }
 }

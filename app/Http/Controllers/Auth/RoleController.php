@@ -40,7 +40,7 @@ class RoleController extends ApiController
 
         $modules = Module::with('features.permissions')->where('is_enabled',1)->get();
         return $this->success($role->name.' Module list',[
-            'item'=> $role,
+            'item'=> $role->formatResponse(),
             'modules'=> PermissionResource::collection($modules),
         ]);
     }
