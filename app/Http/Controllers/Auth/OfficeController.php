@@ -58,14 +58,14 @@ class OfficeController extends ApiController
     public function store(OfficeRequest $request): \Illuminate\Http\JsonResponse
     {
 
-        $this->officeRepository->store($request->validated());
+        $this->officeRepository->store($request);
 
         return $this->success('Office created');
     }
 
     public function update(OfficeRequest $request, Office $office): \Illuminate\Http\JsonResponse
     {
-        $this->officeRepository->update($request->validated(),$office);
+        $this->officeRepository->update($request,$office);
 
         return $this->success('Office updated');
     }

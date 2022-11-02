@@ -28,7 +28,7 @@ class UserRepository extends BaseEloquentRepository implements UserRepositoryInt
 
     public function updateProfile(Request $request, $user): User
     {
-        $this->update($request->validated(),$user);
+        $this->update($request,$user);
         if ($request->hasFile('avatar_file')) {
             $destinationPath = '/uploads/user/';
             $file = $request->file('avatar_file');

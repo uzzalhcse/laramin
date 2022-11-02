@@ -23,14 +23,14 @@ interface BaseEloquentInterface
      * @param Request $request
      * @return Model|null
      */
-    public function store(Request $request): ?Model;
+    public function store($request): ?Model;
 
     /**
      * @param Request $request
      * @param Model $model
      * @return Model|null
      */
-    public function update(Request $request, Model $model): ?Model;
+    public function update($request, Model $model): ?Model;
 
     /**
      * @param Model $model

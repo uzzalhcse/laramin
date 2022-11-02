@@ -48,7 +48,7 @@ class UserController extends ApiController
      */
     public function store(UserRequest $request): JsonResponse
     {
-        $user = $this->userRepository->store($request->validated());
+        $user = $this->userRepository->store($request);
         $this->userRepository->saveAcl($user,$request->role_ids,$request->permissions);
 
         dispatch(new WelcomeEmailJob($user));
@@ -83,7 +83,7 @@ class UserController extends ApiController
      */
     public function update(UserRequest $request, User $user): JsonResponse
     {
-        $this->userRepository->update($request->validated(),$user);
+        $this->userRepository->update($request,$user);
         $this->userRepository->saveAcl($user,$request->role_ids,$request->permissions);
         return $this->success('User Update');
     }

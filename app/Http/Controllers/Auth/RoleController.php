@@ -48,7 +48,7 @@ class RoleController extends ApiController
 
     public function store(StoreRoleRequest $request): JsonResponse
     {
-        $role = $this->roleRepository->store($request->validated());
+        $role = $this->roleRepository->store($request);
 
         $role->permissions()->attach($request->permissions);
         return $this->success('Role Permissions Saved');
@@ -56,7 +56,7 @@ class RoleController extends ApiController
 
     public function update(StoreRoleRequest $request, Role $role): JsonResponse
     {
-        $this->roleRepository->update($request->validated(),$role);
+        $this->roleRepository->update($request,$role);
 
         $role->permissions()->sync($request->permissions);
         return $this->success('Role Permission Updated');

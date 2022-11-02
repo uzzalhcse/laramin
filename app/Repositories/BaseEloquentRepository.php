@@ -63,14 +63,14 @@ class BaseEloquentRepository implements BaseEloquentInterface
     }
 
 
-    public function store(Request $request): ?Model
+    public function store($request): ?Model
     {
         $model = $this->model->create($request->validated());
 
         return $model->fresh();
     }
 
-    public function update(Request $request, Model $model): ?Model
+    public function update($request, Model $model): ?Model
     {
         $this->model = tap($model)->update($request->validated());
         return $this->model->fresh();
