@@ -5,8 +5,13 @@ namespace App\Models\Auth;
 use App\Interfaces\ApiResourceInterface;
 use App\Models\Acl\Module;
 use App\Models\Acl\Permission;
+use Barryvdh\LaravelIdeHelper\Eloquent;
+use Database\Factories\Auth\RoleFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -17,26 +22,26 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string|null $description
  * @property int $is_deletable
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Permission[] $permissions
+ * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\User[] $users
+ * @property-read Collection|User[] $users
  * @property-read int|null $users_count
- * @method static \Database\Factories\Auth\RoleFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role query()
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereIsDeletable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static RoleFactory factory(...$parameters)
+ * @method static Builder|Role newModelQuery()
+ * @method static Builder|Role newQuery()
+ * @method static Builder|Role query()
+ * @method static Builder|Role whereCreatedAt($value)
+ * @method static Builder|Role whereDeletedAt($value)
+ * @method static Builder|Role whereDescription($value)
+ * @method static Builder|Role whereId($value)
+ * @method static Builder|Role whereIsDeletable($value)
+ * @method static Builder|Role whereName($value)
+ * @method static Builder|Role whereSlug($value)
+ * @method static Builder|Role whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Role extends Model implements ApiResourceInterface
 {
@@ -52,15 +57,17 @@ class Role extends Model implements ApiResourceInterface
         'slug',
         'description'
     ];
+    protected static function boot()
+    {
+        parent::boot();
 
+        static::creating(function($model) {
+            $model->slug = Str::kebab($model->name);
+        });
+    }
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = Str::ucfirst($value);
-    }
-
-    public function setSlugAttribute($value)
-    {
-        $this->attributes['slug'] = Str::kebab($value);
     }
 
     public function users(){
